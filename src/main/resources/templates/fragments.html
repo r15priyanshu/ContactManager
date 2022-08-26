@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="navbar">
+		<div class="sidebar" style="font-family: 'Oswald', sans-serif;">
+			<a id="active1" href="/home">Home</a>
+			<a id="active2" th:if="${session.loggedInUser}" th:href="@{'/user/'+${session.loggedInUser.getUsername()}+'/profile'}">Profile</a>
+			<a id="active3" th:if="${session.loggedInUser}" th:href="@{'/user/'+${session.loggedInUser.getUsername()}+'/contacts/1'}">Contacts</a>
+			<a id="active4" th:if="${session.loggedInUser}" th:href="@{'/user/'+${session.loggedInUser.getUsername()}+'/addcontacts'}">Add Contacts</a>
+			<a id="active5" th:if="${session.loggedInUser==null}" href="/login">Login</a>
+			<a id="active6" th:if="${session.loggedInUser==null}" href="/register">Register</a>
+			<a id="active7" th:if="${session.loggedInUser}" href="/logout">Logout</a>
+		</div>
+	</div>
+</body>
+</html>

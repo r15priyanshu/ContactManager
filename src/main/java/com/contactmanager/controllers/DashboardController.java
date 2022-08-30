@@ -55,30 +55,34 @@ public class DashboardController {
 		user.setRegdate(loggedInUser.getRegdate());
 		user.setImage(loggedInUser.getImage());
 		user.setRole(loggedInUser.getRole());
-		if (!loggedInUser.getEmail().equals(user.getEmail()) && dashboardService.checkUserByEmail(user.getEmail())) {
-			Message message = new Message("Email Already In Use !!", "alert-danger");
-			session.setAttribute("message", message);
-		} else {
-			if (!loggedInUser.getUsername().equals(user.getUsername())
-					&& dashboardService.checkUserByUsername(user.getUsername())) {
-				System.out.println("bokala");
-				Message message = new Message("Username Not Available !!", "alert-danger");
+
+		if (!user.getEmail().equals(loggedInUser.getEmail())) {
+			if (dashboardService.checkUserByEmail(user.getEmail())) {
+				Message message = new Message("Email Already In Use !!", "alert-danger");
 				session.setAttribute("message", message);
 				return "redirect:/user/" + loggedInUser.getUsername() + "/profile";
-			} else {
-
-				User updatedUser = dashboardService.editUser(user);
-				if (updatedUser != null) {
-					session.removeAttribute("loggedInUser");
-					session.setAttribute("loggedInUser", updatedUser);
-					Message message = new Message("Profile Edited Successfully !!", "alert-success");
-					session.setAttribute("message", message);
-				} else {
-					Message message = new Message("Something Went Wrong !!", "alert-danger");
-					session.setAttribute("message", message);
-				}
 			}
 		}
+		
+		if (!user.getUsername().equals(loggedInUser.getUsername())) {
+			if (dashboardService.checkUserByUsername(user.getUsername())) {
+				Message message = new Message("Username Already Taken !!", "alert-danger");
+				session.setAttribute("message", message);
+				return "redirect:/user/" + loggedInUser.getUsername() + "/profile";
+			}
+		}
+
+		User updatedUser = dashboardService.editUser(user);
+		if (updatedUser != null) {
+			session.removeAttribute("loggedInUser");
+			session.setAttribute("loggedInUser", updatedUser);
+			Message message = new Message("Profile Edited Successfully !!", "alert-success");
+			session.setAttribute("message", message);
+		} else {
+			Message message = new Message("Something Went Wrong !!", "alert-danger");
+			session.setAttribute("message", message);
+		}
+
 		return "redirect:/user/" + loggedInUser.getUsername() + "/profile";
 	}
 

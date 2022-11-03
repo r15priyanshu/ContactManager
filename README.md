@@ -5,16 +5,16 @@ A contact manager is a software program that enables users to easily store and f
 ![Home](Screenshots/Home.PNG)
 
 ##### LOGIN PAGE
-![Home](Screenshots/Login.PNG)
+![Login](Screenshots/Login.PNG)
 
 ##### REGISTER PAGE
-![Home](Screenshots/Register.PNG)
+![Register](Screenshots/Register.PNG)
 
 ##### PROFILE PAGE
-![Home](Screenshots/Profile.PNG)
+![Profile](Screenshots/Profile.PNG)
 
 ##### CONTACTS PAGE
-![Home](Screenshots/Contacts.PNG)
+![Contact](Screenshots/Contacts.PNG)
 
 ### QUICK GUIDE/STEPS TO RUN THE PROJECT:
 1. Clone the project.

@@ -33,9 +33,10 @@
 		}
 </script>
 <style>
-body{
- background: rgb(244,222,222);
-background: linear-gradient(300deg, rgba(244,222,222,1) 50%, rgba(255,193,7,1) 100%); 
+body {
+	background: rgb(244, 222, 222);
+	background: linear-gradient(300deg, rgba(244, 222, 222, 1) 50%,
+		rgba(255, 193, 7, 1) 100%);
 }
 
 #active3 {
@@ -61,7 +62,7 @@ background: linear-gradient(300deg, rgba(244,222,222,1) 50%, rgba(255,193,7,1) 1
 						<strong th:text="${session.message.getBody()}"></strong>
 						<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 					</div>
-					<div style="min-height: 450px;">
+					<div style="min-height: 350px;">
 						<table class="table table-striped">
 							<thead>
 								<tr>
@@ -223,11 +224,67 @@ background: linear-gradient(300deg, rgba(244,222,222,1) 50%, rgba(255,193,7,1) 1
 
 
 				</div>
+
+
+			</div>
+
+			<!--Search functionality Start  -->
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-md-6 offset-3">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1">@</span>
+						</div>
+						<input type="text" class="form-control"
+							placeholder="Search Contact Here" aria-label="Username"
+							aria-describedby="basic-addon1" id="searchcontact"
+							th:onkeyup="|search()|">
+
+					</div>
+					<input type="text" id="loggedinusernameforsearch"
+						th:value="${session.loggedInUser.getUsername()}" hidden> <input
+						type="text" id="loggedinuseridforsearch"
+						th:value="${session.loggedInUser.getUid()}" hidden>
+						<div id="searchresult">
+						</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
 
 
+	<script>
+	
+	function search() {
+	
+	if($("#searchcontact").val()!="")
+	{
+		$("#searchresult").show();
+			let url="/api/user/"+$("#loggedinusernameforsearch").val()+"/contacts/"+$("#loggedinuseridforsearch").val()+"/"+$("#searchcontact").val()	
+	fetch(url).then((response)=>{
+	
+		return response.json();
+		
+	}).then((data)=>{
+	
+		let resulthtml= `<div class="list-group">`;
+		data.forEach((contact)=>{
+		resulthtml += `<button class='list-group-item list-group-action'>${contact.fullname}</button>`;
+		
+		});
+		
+		resulthtml += '</div>';
+		
+		$("#searchresult").html(resulthtml);
+	});	
+	
+	}else{
+		$("#searchresult").hide();
+	}
+		
+	}
+	</script>
 
 
 	<!--Bootstrap JavaScript Bundle with Popper -->

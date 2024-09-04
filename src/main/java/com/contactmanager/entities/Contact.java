@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.DynamicInsert;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @DynamicInsert
@@ -30,6 +31,7 @@ public class Contact {
 	
 	@ManyToOne
 	@JoinColumn(name = "uid")
+	@JsonIgnore
 	private User user;
 
 	public Contact() {

@@ -16,4 +16,7 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
 	@Query("from Contact as c where c.user.uid =:userid")
 	public Page<Contact> findContactsByUser(@Param("userid") int userid,Pageable pageable);
+	
+	@Query("from Contact as c where c.user.uid  =:userid and c.fullname like %:fullname%")
+	public List<Contact> findContactsByUserSearchParameter(@Param("userid") int userid,@Param("fullname") String fullname);
 }

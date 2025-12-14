@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.entities.AppUser;
 import com.anshuit.contactmanager.helper.Message;
 import com.anshuit.contactmanager.services.LoginService;
 
@@ -23,21 +23,21 @@ public class LoginController {
 	@GetMapping("/login")
 	public String login(Model model) {
 		// trying to fetch user if it is in flash attribute
-		User user = (User) model.asMap().get("user");
+		AppUser user = (AppUser) model.asMap().get("user");
 		if (user == null) {
-			user = new User();
+			user = new AppUser();
 		}
 		model.addAttribute("user", user);
 		return "login";
 	}
 
 	@PostMapping("/login")
-	public String doLogin(@ModelAttribute User user, Model model, RedirectAttributes redirectAttributes,
+	public String doLogin(@ModelAttribute AppUser user, Model model, RedirectAttributes redirectAttributes,
 			HttpSession session) {
 		System.out.println("Login requested for :" + user.getEmail());
 
 		if (loginService.findUserByEmail(user.getEmail()) != null) {
-			User founduser = loginService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
+			AppUser founduser = loginService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
 			if (founduser != null) {
 				session.setAttribute("loggedInUser", founduser);
 				System.out.println("Login Successful for :" + user.getEmail());

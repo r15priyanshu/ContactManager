@@ -3,7 +3,7 @@ package com.anshuit.contactmanager.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.entities.AppUser;
 import com.anshuit.contactmanager.repos.UserRepository;
 
 @Service
@@ -11,7 +11,7 @@ public class RegisterService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public boolean registerUser(User user)
+	public boolean registerUser(AppUser user)
 	{
 		try{
 			userRepository.save(user);
@@ -20,7 +20,7 @@ public class RegisterService {
 			return false;
 		}
 	}
-	public User findUserByEmail(String email)
+	public AppUser findUserByEmail(String email)
 	{
 		return userRepository.findUserByEmail(email);
 	}

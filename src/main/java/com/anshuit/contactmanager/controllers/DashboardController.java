@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.anshuit.contactmanager.entities.Contact;
-import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.entities.AppUser;
 import com.anshuit.contactmanager.helper.FileUploader;
 import com.anshuit.contactmanager.helper.Message;
 import com.anshuit.contactmanager.helper.ValidUserCheck;
@@ -37,7 +37,7 @@ public class DashboardController {
 	private DashboardService dashboardService;
 
 	@GetMapping("/{username}/profile")
-	public String profile(Model m, @PathVariable("username") String username, HttpSession session) {
+	public String profile(Model model, @PathVariable("username") String username, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
 			return "profile";
 		} else {
@@ -48,11 +48,11 @@ public class DashboardController {
 	}
 
 	@PostMapping("/{username}/editprofile")
-	public String editProfile(@ModelAttribute User user, Model m, RedirectAttributes redirectAttributes,
+	public String editProfile(@ModelAttribute AppUser user, Model model, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		User loggedInUser = (User) session.getAttribute("loggedInUser");
-		user.setUid(loggedInUser.getUid());
-		user.setRegdate(loggedInUser.getRegdate());
+		AppUser loggedInUser = (AppUser) session.getAttribute("loggedInUser");
+		user.setUserId(loggedInUser.getUserId());
+		user.setRegistrationDate(loggedInUser.getRegistrationDate());
 		user.setImage(loggedInUser.getImage());
 		user.setRole(loggedInUser.getRole());
 
@@ -72,7 +72,7 @@ public class DashboardController {
 			}
 		}
 
-		User updatedUser = dashboardService.editUser(user);
+		AppUser updatedUser = dashboardService.editUser(user);
 		if (updatedUser != null) {
 			session.removeAttribute("loggedInUser");
 			session.setAttribute("loggedInUser", updatedUser);
@@ -89,7 +89,7 @@ public class DashboardController {
 	@PostMapping("/{username}/editprofilepic")
 	public String editProfilePic(Model m, RedirectAttributes redirectAttributes, HttpSession session,
 			@PathVariable("username") String username, @RequestParam("formimage") MultipartFile file) {
-		User user = (User) session.getAttribute("loggedInUser");
+		AppUser user = (AppUser) session.getAttribute("loggedInUser");
 		if (ValidUserCheck.check(session, username)) {
 			String originalfilename = file.getOriginalFilename();
 			if (file.isEmpty()) {
@@ -105,7 +105,7 @@ public class DashboardController {
 					File file1 = new ClassPathResource("static/uploads").getFile();
 					String finalfilepath = file1.getAbsolutePath() + File.separator + finalfilename;
 					if (FileUploader.uploadFile(file, finalfilepath)) {
-						dashboardService.updateProfilePic(user.getUid(), finalfilename);
+						dashboardService.updateProfilePic(user.getUserId(), finalfilename);
 						session.removeAttribute("loggedInUser");
 						user.setImage(finalfilename);
 						session.setAttribute("loggedInUser", user);
@@ -144,7 +144,7 @@ public class DashboardController {
 	public String contacts(Model model, @PathVariable("username") String username,
 			@PathVariable("currentpage") Integer currentpage, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
-			User user = (User) session.getAttribute("loggedInUser");
+			AppUser user = (AppUser) session.getAttribute("loggedInUser");
 			// System.out.println(user);
 			int contactsperpage = 4;
 			Pageable pageable = PageRequest.of(currentpage - 1, contactsperpage);
@@ -168,7 +168,7 @@ public class DashboardController {
 			@RequestParam("formimage") MultipartFile file, @PathVariable("username") String username,
 			HttpSession session, RedirectAttributes redirectAttributes) {
 		if (ValidUserCheck.check(session, username)) {
-			User user = (User) session.getAttribute("loggedInUser");
+			AppUser user = (AppUser) session.getAttribute("loggedInUser");
 			contact.setUser(user);
 			String originalfilename = file.getOriginalFilename();
 			if (file.isEmpty()) {
@@ -223,13 +223,13 @@ public class DashboardController {
 	public String deleteContacts(Model model, @PathVariable("username") String username,
 			@PathVariable("cid") Integer cid, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
-			User user = (User) session.getAttribute("loggedInUser");
+			AppUser user = (AppUser) session.getAttribute("loggedInUser");
 			Contact contact = dashboardService.findContactById(cid);
 			if (contact == null) {
 				Message message = new Message("No Such Contact !!", "alert-danger");
 				session.setAttribute("message", message);
 			} else {
-				if (user.getUid() == contact.getUser().getUid()) {
+				if (user.getUserId() == contact.getUser().getUserId()) {
 					dashboardService.deleteContactById(cid);
 					Message message = new Message("Contact Deleted Successfully !!", "alert-success");
 					session.setAttribute("message", message);
@@ -270,14 +270,14 @@ public class DashboardController {
 			@PathVariable("cid") Integer cid, HttpSession session, RedirectAttributes redirectAttributes) {
 		if (ValidUserCheck.check(session, username)) {
 			// System.out.println(contact);
-			User user = (User) session.getAttribute("loggedInUser");
+			AppUser user = (AppUser) session.getAttribute("loggedInUser");
 			Contact foundcontact = dashboardService.findContactById(cid);
 			String originalfilename = file.getOriginalFilename();
 			if (foundcontact == null) {
 				Message message = new Message("No Such Contact !!", "alert-danger");
 				session.setAttribute("message", message);
 			} else {
-				if (user.getUid() == foundcontact.getUser().getUid()) {
+				if (user.getUserId() == foundcontact.getUser().getUserId()) {
 					contact.setUser(user);
 					if (file.isEmpty()) {
 						contact.setImage(foundcontact.getImage());

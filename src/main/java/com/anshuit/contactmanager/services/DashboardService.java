@@ -1,14 +1,12 @@
 package com.anshuit.contactmanager.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.anshuit.contactmanager.entities.AppUser;
 import com.anshuit.contactmanager.entities.Contact;
-import com.anshuit.contactmanager.entities.User;
 import com.anshuit.contactmanager.repos.ContactRepository;
 import com.anshuit.contactmanager.repos.UserRepository;
 
@@ -16,70 +14,61 @@ import com.anshuit.contactmanager.repos.UserRepository;
 public class DashboardService {
 	@Autowired
 	private ContactRepository contactRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
-	public boolean addContact(Contact contact)
-	{
-		if(contactRepository.save(contact)!=null) {
+
+	public boolean addContact(Contact contact) {
+		if (contactRepository.save(contact) != null) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
-	public Page<Contact> findContactsByUser(User user,Pageable pageable)
-	{
-		return contactRepository.findContactsByUser(user.getUid(),pageable);
+
+	public Page<Contact> findContactsByUser(AppUser user, Pageable pageable) {
+		return contactRepository.findContactsByUser(user.getUserId(), pageable);
 	}
-	
-	public Contact findContactById(int cid) 
-	{
-		//System.out.println(contactRepository.findById(cid).get());
+
+	public Contact findContactById(int cid) {
+		// System.out.println(contactRepository.findById(cid).get());
 		return contactRepository.findById(cid).get();
 	}
-	
-	public void deleteContactById(int cid)
-	{
+
+	public void deleteContactById(int cid) {
 		contactRepository.deleteById(cid);
 	}
-	
-	public User findUserByUsername(String username)
-	{
+
+	public AppUser findUserByUsername(String username) {
 		return userRepository.findUserByUsername(username);
 	}
-	
-	public User findUserByEmail(String email)
-	{
+
+	public AppUser findUserByEmail(String email) {
 		return userRepository.findUserByEmail(email);
 	}
-	
-	public boolean checkUserByEmail(String email)
-	{
-		if(userRepository.findUserByEmail(email)!=null)
+
+	public boolean checkUserByEmail(String email) {
+		if (userRepository.findUserByEmail(email) != null)
 			return true;
 		else
 			return false;
 	}
-	
-	public boolean checkUserByUsername(String username)
-	{
-		if(userRepository.findUserByUsername(username)!=null)
+
+	public boolean checkUserByUsername(String username) {
+		if (userRepository.findUserByUsername(username) != null)
 			return true;
 		else
 			return false;
 	}
-	
-	public User editUser(User user)
-	{
+
+	public AppUser editUser(AppUser user) {
 		return userRepository.save(user);
 	}
-	
-	public int updateProfilePic(int userid,String filename) {
+
+	public int updateProfilePic(int userid, String filename) {
 		return userRepository.updateProfilePic(userid, filename);
 	}
-	
+
 	public DashboardService() {
 	}
 }

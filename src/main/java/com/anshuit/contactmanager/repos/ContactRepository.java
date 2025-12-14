@@ -14,9 +14,10 @@ import com.anshuit.contactmanager.entities.Contact;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
-	@Query("from Contact as c where c.user.uid =:userid")
-	public Page<Contact> findContactsByUser(@Param("userid") int userid,Pageable pageable);
-	
-	@Query("from Contact as c where c.user.uid  =:userid and c.fullname like %:fullname%")
-	public List<Contact> findContactsByUserSearchParameter(@Param("userid") int userid,@Param("fullname") String fullname);
+	@Query("FROM Contact AS c WHERE c.user.userId =:userId")
+	public Page<Contact> findContactsByUser(@Param("userId") int userid, Pageable pageable);
+
+	@Query("FROM Contact AS c WHERE c.user.userId  =:userId AND c.fullname LIKE %:fullname%")
+	public List<Contact> findContactsByUserSearchParameter(@Param("userId") int userid,
+			@Param("fullname") String fullname);
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.entities.AppUser;
 import com.anshuit.contactmanager.helper.Message;
 import com.anshuit.contactmanager.services.RegisterService;
 
@@ -23,16 +23,16 @@ public class RegisterController {
 	@GetMapping("/register")
 	public String register(Model m) {
 		// trying to fetch user if it is in flash attribute
-		User user = (User) m.asMap().get("user");
+		AppUser user = (AppUser) m.asMap().get("user");
 		if (user == null) {
-			user = new User();
+			user = new AppUser();
 		}
 		m.addAttribute("user", user);
 		return "register";
 	}
 
 	@PostMapping("/register")
-	public String registerUser(@ModelAttribute User user, Model m, RedirectAttributes redirectAttributes,
+	public String registerUser(@ModelAttribute AppUser user, Model m, RedirectAttributes redirectAttributes,
 			HttpSession session) {
 		if (registerService.checkUserByEmail(user.getEmail())) {
 			Message message = new Message("Email Already Registered !!", "alert-danger");

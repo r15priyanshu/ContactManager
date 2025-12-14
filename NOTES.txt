@@ -1,0 +1,41 @@
+================================================================================================
+CREATE AND RUN THYMELEAF MVC SPRING BOOT PROJECT
+================================================================================================
+1. Go To Spring Initializer
+2. Create Maven Project and Add Below Dependencies:
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+3. Download And Extract The Downloaded Project.
+4. Import It In The STS and Run As Spring Boot App.
+
+================================================================================================
+VS CODE EXTENSIONS
+================================================================================================
+Extension Pack for Java
+Spring Boot Extension Pack

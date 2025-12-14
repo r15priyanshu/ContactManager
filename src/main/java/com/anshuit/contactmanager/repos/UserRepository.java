@@ -6,19 +6,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.entities.AppUser;
 
 import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface UserRepository extends JpaRepository<User,Integer> {
-	
-	public User findUserByEmail(String email);
-	public User findUserByUsername(String username);
-	public User findUserByEmailAndPassword(String email,String password);
-	
+public interface UserRepository extends JpaRepository<AppUser, Integer> {
+
+	public AppUser findUserByEmail(String email);
+
+	public AppUser findUserByUsername(String username);
+
+	public AppUser findUserByEmailAndPassword(String email, String password);
+
 	@Modifying
-	@Query("update User u set u.image =:filename where u.uid =:userid")
-	public int updateProfilePic(@Param("userid") int userid,@Param("filename") String filename);
+	@Query("UPDATE AppUser u SET u.image =:filename WHERE u.userId =:userId")
+	public int updateProfilePic(@Param("userId") int userid, @Param("filename") String filename);
 }

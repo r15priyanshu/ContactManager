@@ -3,7 +3,7 @@ package com.anshuit.contactmanager.controllers;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.entities.AppUser;
 import com.anshuit.contactmanager.helper.Message;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ public class DashboardInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		//System.out.println("INSIDE INTERCEPTOR");
-		User user=(User) request.getSession().getAttribute("loggedInUser");
+		AppUser user=(AppUser) request.getSession().getAttribute("loggedInUser");
 		if (user!= null)
 			return true;
 		else {

@@ -1,18 +1,18 @@
-package com.contactmanager.controllers;
-
-import javax.servlet.http.HttpSession;
+package com.anshuit.contactmanager.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.contactmanager.entities.User;
-import com.contactmanager.helper.Message;
-import com.contactmanager.services.RegisterService;
+import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.helper.Message;
+import com.anshuit.contactmanager.services.RegisterService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RegisterController {
@@ -20,7 +20,7 @@ public class RegisterController {
 	@Autowired
 	private RegisterService registerService;
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@GetMapping("/register")
 	public String register(Model m) {
 		// trying to fetch user if it is in flash attribute
 		User user = (User) m.asMap().get("user");
@@ -31,7 +31,7 @@ public class RegisterController {
 		return "register";
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@PostMapping("/register")
 	public String registerUser(@ModelAttribute User user, Model m, RedirectAttributes redirectAttributes,
 			HttpSession session) {
 		if (registerService.checkUserByEmail(user.getEmail())) {

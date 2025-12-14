@@ -1,4 +1,4 @@
-package com.contactmanager.services;
+package com.anshuit.contactmanager.services;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.contactmanager.entities.Contact;
-import com.contactmanager.entities.User;
-import com.contactmanager.repos.ContactRepository;
-import com.contactmanager.repos.UserRepository;
+import com.anshuit.contactmanager.entities.Contact;
+import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.repos.ContactRepository;
+import com.anshuit.contactmanager.repos.UserRepository;
 
 @Service
 public class DashboardService {

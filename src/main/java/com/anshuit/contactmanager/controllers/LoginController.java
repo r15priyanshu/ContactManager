@@ -1,19 +1,18 @@
-package com.contactmanager.controllers;
-
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
+package com.anshuit.contactmanager.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.contactmanager.entities.User;
-import com.contactmanager.helper.Message;
-import com.contactmanager.services.LoginService;
+import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.helper.Message;
+import com.anshuit.contactmanager.services.LoginService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -21,7 +20,7 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public String login(Model model) {
 		// trying to fetch user if it is in flash attribute
 		User user = (User) model.asMap().get("user");
@@ -32,16 +31,16 @@ public class LoginController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping("/login")
 	public String doLogin(@ModelAttribute User user, Model model, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		System.out.println("Login requested for :"+user.getEmail());
+		System.out.println("Login requested for :" + user.getEmail());
 
 		if (loginService.findUserByEmail(user.getEmail()) != null) {
 			User founduser = loginService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
 			if (founduser != null) {
 				session.setAttribute("loggedInUser", founduser);
-				System.out.println("Login Successful for :"+user.getEmail());
+				System.out.println("Login Successful for :" + user.getEmail());
 				return "redirect:/user/" + founduser.getUsername() + "/profile";
 			} else {
 				Message message = new Message("Incorrect Password !!", "alert-danger");
@@ -56,7 +55,7 @@ public class LoginController {
 		return "redirect:/login";
 	}
 
-	@RequestMapping("/logout")
+	@GetMapping("/logout")
 	public String logout(Model model, HttpSession session) {
 		if (session.getAttribute("loggedInUser") != null) {
 			session.removeAttribute("loggedInUser");

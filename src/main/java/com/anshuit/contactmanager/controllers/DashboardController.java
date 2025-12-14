@@ -1,10 +1,8 @@
-package com.contactmanager.controllers;
+package com.anshuit.contactmanager.controllers;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -13,21 +11,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.contactmanager.entities.Contact;
-import com.contactmanager.entities.User;
-import com.contactmanager.helper.FileUploader;
-import com.contactmanager.helper.Message;
-import com.contactmanager.helper.ValidUserCheck;
-import com.contactmanager.repos.ContactRepository;
-import com.contactmanager.services.DashboardService;
+import com.anshuit.contactmanager.entities.Contact;
+import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.helper.FileUploader;
+import com.anshuit.contactmanager.helper.Message;
+import com.anshuit.contactmanager.helper.ValidUserCheck;
+import com.anshuit.contactmanager.services.DashboardService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user")
@@ -36,7 +36,7 @@ public class DashboardController {
 	@Autowired
 	private DashboardService dashboardService;
 
-	@RequestMapping("/{username}/profile")
+	@GetMapping("/{username}/profile")
 	public String profile(Model m, @PathVariable("username") String username, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
 			return "profile";
@@ -47,7 +47,7 @@ public class DashboardController {
 		}
 	}
 
-	@RequestMapping(value = "/{username}/editprofile", method = RequestMethod.POST)
+	@PostMapping("/{username}/editprofile")
 	public String editProfile(@ModelAttribute User user, Model m, RedirectAttributes redirectAttributes,
 			HttpSession session) {
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -63,7 +63,7 @@ public class DashboardController {
 				return "redirect:/user/" + loggedInUser.getUsername() + "/profile";
 			}
 		}
-		
+
 		if (!user.getUsername().equals(loggedInUser.getUsername())) {
 			if (dashboardService.checkUserByUsername(user.getUsername())) {
 				Message message = new Message("Username Already Taken !!", "alert-danger");
@@ -86,7 +86,7 @@ public class DashboardController {
 		return "redirect:/user/" + loggedInUser.getUsername() + "/profile";
 	}
 
-	@RequestMapping(value = "/{username}/editprofilepic", method = RequestMethod.POST)
+	@PostMapping("/{username}/editprofilepic")
 	public String editProfilePic(Model m, RedirectAttributes redirectAttributes, HttpSession session,
 			@PathVariable("username") String username, @RequestParam("formimage") MultipartFile file) {
 		User user = (User) session.getAttribute("loggedInUser");
@@ -140,7 +140,7 @@ public class DashboardController {
 	// requested page from the controller [ultimately it will be decreased by -1
 	// because Page starts with 0 internally]]
 	// contactsperpage -> represents the number of contacts to be served per page
-	@RequestMapping("/{username}/contacts/{currentpage}")
+	@GetMapping("/{username}/contacts/{currentpage}")
 	public String contacts(Model model, @PathVariable("username") String username,
 			@PathVariable("currentpage") Integer currentpage, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
@@ -163,7 +163,7 @@ public class DashboardController {
 	}
 
 	// Post Method for adding new contact
-	@RequestMapping(value = "/{username}/addcontacts", method = RequestMethod.POST)
+	@PostMapping("/{username}/addcontacts")
 	public String addNewContact(Model model, @ModelAttribute Contact contact,
 			@RequestParam("formimage") MultipartFile file, @PathVariable("username") String username,
 			HttpSession session, RedirectAttributes redirectAttributes) {
@@ -219,7 +219,7 @@ public class DashboardController {
 	}
 
 	// Get Method for deleting a contact
-	@RequestMapping("/{username}/deletecontacts/{cid}")
+	@GetMapping("/{username}/deletecontacts/{cid}")
 	public String deleteContacts(Model model, @PathVariable("username") String username,
 			@PathVariable("cid") Integer cid, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
@@ -247,7 +247,7 @@ public class DashboardController {
 	}
 
 	// Get Method for showing addcontacts form
-	@RequestMapping("/{username}/addcontacts")
+	@GetMapping("/{username}/addcontacts")
 	public String addcontacts(Model model, @PathVariable("username") String username, HttpSession session) {
 		if (ValidUserCheck.check(session, username)) {
 			Contact contact = (Contact) model.asMap().get("contact");
@@ -264,7 +264,7 @@ public class DashboardController {
 	}
 
 	// Post Method for editing a contact
-	@RequestMapping(value = "/{username}/editcontacts/{cid}", method = RequestMethod.POST)
+	@PostMapping("/{username}/editcontacts/{cid}")
 	public String editContacts(Model model, @ModelAttribute Contact contact,
 			@RequestParam("formimage") MultipartFile file, @PathVariable("username") String username,
 			@PathVariable("cid") Integer cid, HttpSession session, RedirectAttributes redirectAttributes) {

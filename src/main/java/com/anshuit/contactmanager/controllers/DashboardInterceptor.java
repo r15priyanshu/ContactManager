@@ -1,13 +1,13 @@
-package com.contactmanager.controllers;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+package com.anshuit.contactmanager.controllers;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.contactmanager.entities.User;
-import com.contactmanager.helper.Message;
+import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.helper.Message;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class DashboardInterceptor implements HandlerInterceptor {

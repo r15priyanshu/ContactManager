@@ -1,4 +1,4 @@
-package com.contactmanager.repos;
+package com.anshuit.contactmanager.repos;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.contactmanager.entities.Contact;
+import com.anshuit.contactmanager.entities.Contact;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Integer> {

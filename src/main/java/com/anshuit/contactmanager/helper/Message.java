@@ -1,4 +1,4 @@
-package com.contactmanager.helper;
+package com.anshuit.contactmanager.helper;
 
 public class Message {
 	private String body;

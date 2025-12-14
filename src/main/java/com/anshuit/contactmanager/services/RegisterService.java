@@ -1,10 +1,10 @@
-package com.contactmanager.services;
+package com.anshuit.contactmanager.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.contactmanager.entities.User;
-import com.contactmanager.repos.UserRepository;
+import com.anshuit.contactmanager.entities.User;
+import com.anshuit.contactmanager.repos.UserRepository;
 
 @Service
 public class RegisterService {
